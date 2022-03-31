@@ -1,5 +1,6 @@
 const express = require('express');
-const resp = require('express/lib/response');
+//const resp = require('express/lib/response');
+const cors = require('cors');
 
 //Crear el servidor/aplicacion de express
 const app = express();
@@ -15,6 +16,12 @@ app.get('/', ( req, resp) => {
 	});
 });
 */
+
+// CORS
+app.use( cors() );
+
+// Lectura y parseo del body
+app.use( express.json() );
 
 //Rutas
 app.use('/api/auth', require('./routes/auth'));

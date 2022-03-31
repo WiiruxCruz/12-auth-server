@@ -1,9 +1,9 @@
 const express = require('express');
-const res = require('express/lib/response');
+const resp = require('express/lib/response');
 
 //Crear el servidor/aplicacion de express
 const app = express();
-
+/*
 // GET
 app.get('/', ( req, resp) => {
 	//console.log('Petición en el /');
@@ -14,6 +14,10 @@ app.get('/', ( req, resp) => {
 		uid: 1234
 	});
 });
+*/
+
+//Rutas
+app.use('/api/auth', require('./routes/auth'));
 
 app.listen( 4000, () => {
 	console.log(`Servidor corriendo en puerto ${4000}`);

@@ -20,6 +20,9 @@ app.get('/', ( req, resp) => {
 });
 */
 
+// Directorio público
+app.use( express.static('public') )
+
 // CORS
 app.use( cors() );
 

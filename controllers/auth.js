@@ -3,6 +3,16 @@ const { validationResult } = require('express-validator');
 
 const crearUsuario = ( req, resp = response ) => {
 
+	const errors = validationResult( req );
+	console.log(errors)
+
+	if( !errors.isEmpty() ) {
+		return resp.status(400).json({
+			ok: false,
+			errors: errors.mapped()
+		})
+	}
+
 	console.log( req.body );
 	const { name, email, password } = req.body;
 	console.log( name, email, password );

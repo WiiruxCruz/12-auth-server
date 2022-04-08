@@ -55,7 +55,7 @@ const crearUsuario = async( req, resp = response ) => {
 	}	
 }
 
-const loginUsuario = (req, resp = response) => {
+const loginUsuario = async( req, resp = response ) => {
 	/* Se comenda porque se agrega funcionalidad en el middleware
 	const errors = validationResult( req );
 
@@ -69,12 +69,47 @@ const loginUsuario = (req, resp = response) => {
 	*/
 	
 	const { email, password } = req.body;
-	console.log( email, password );
+	try {
+		console.log( email, password );
 
-	return resp.json({
-		ok: true,
-		msg: 'Login de usuario /'
-	})
+		const dbUser = await Usuario.findOne( { email } );
+
+		if( !dbUser ) {
+			return resp.status(400).json({
+				ok: false,
+				msg: 'El correo no existe'
+			});
+		}
+
+		// Confirmar si el password hace match
+		const validPassword = bcrypt.compareSync( password, dbUser.password );
+
+		if( !validPassword ) {
+			return resp.status(400).json({
+				ok: false,
+				msg: 'El password no es valido'
+			});
+		}
+
+		// Generar el JWT
+		const token = await generarJWT( dbUser.id, dbUser.name );
+
+		// Respuesta del servicio
+		return resp.json({
+			ok: true,
+			uid: dbUser.id,
+			name: dbUser.name,
+			token
+		});
+
+		
+
+	} catch ( error) {
+		return resp.status(500).json({
+			ok: false,
+			msg: 'Hable con el administrador'
+		});
+	}
 }
 
 const revalidarToken = (req, resp = response) => {

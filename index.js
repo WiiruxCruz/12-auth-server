@@ -1,12 +1,17 @@
 const express = require('express');
 //const resp = require('express/lib/response');
 const cors = require('cors');
+const { dbConnection } = require('./db/config');
 require('dotenv').config();
 
 console.log(process.env);
 
 //Crear el servidor/aplicacion de express
 const app = express();
+
+// Base de datos
+dbConnection();
+
 /*
 // GET
 app.get('/', ( req, resp) => {
